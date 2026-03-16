@@ -3,157 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DXSHOP Premium</title>
+    <title>DXSHOP | PREMIUM</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #000; --card: #111; --accent: #fff; --text-gray: #888; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 0; overflow-x: hidden; }
+        :root { --bg: #000; --card: #121212; --accent: #fff; --gray: #888; --br: 20px; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 0; user-select: none; }
         
-        .app-container { padding: 20px 20px 100px 20px; }
-        
-        /* Вкладки */
-        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .app { padding: 20px 20px 100px; }
+        .tab-content { display: none; animation: slideUp 0.3s ease; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Заголовки */
-        h1 { font-weight: 800; font-size: 28px; letter-spacing: -1px; margin-bottom: 25px; text-transform: uppercase; }
-
-        /* Карточки и инпуты */
-        .card { background: var(--card); border: 1px solid #222; padding: 20px; border-radius: 18px; margin-bottom: 20px; }
-        label { display: block; font-size: 11px; color: var(--text-gray); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; }
-        input, select { width: 100%; background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 14px; border-radius: 12px; margin-bottom: 15px; font-size: 16px; outline: none; transition: 0.2s; }
+        h1 { font-weight: 900; font-size: 32px; margin-bottom: 20px; letter-spacing: -1.5px; }
+        
+        /* Карточки в стиле Apple/Telegram */
+        .card { background: var(--card); border: 1px solid #222; border-radius: var(--br); padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 10px; color: var(--gray); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; }
+        input { width: 100%; background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; transition: 0.2s; }
         input:focus { border-color: var(--accent); }
 
-        /* Варианты веса */
-        .weight-chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        .chip { background: #1a1a1a; border: 1px solid #333; padding: 10px; border-radius: 10px; text-align: center; font-size: 13px; cursor: pointer; transition: 0.2s; }
-        .chip.selected { background: var(--accent); color: #000; border-color: var(--accent); font-weight: bold; }
+        /* Выбор веса */
+        .weight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .w-item { background: #1a1a1a; border: 1px solid #333; padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .w-item.active { background: #fff; color: #000; border-color: #fff; font-weight: 700; }
+        .w-item span { display: block; font-size: 20px; margin-bottom: 5px; }
+        .w-item p { margin: 0; font-size: 12px; }
 
-        /* Нижнее меню */
-        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 15px 0 30px 0; z-index: 100; }
-        .nav-item { text-align: center; color: var(--text-gray); cursor: pointer; transition: 0.2s; flex: 1; }
-        .nav-item.active { color: var(--accent); }
-        .nav-icon { font-size: 24px; display: block; margin-bottom: 4px; }
-        .nav-text { font-size: 10px; font-weight: 600; text-transform: uppercase; }
+        /* Таймер и Оплата */
+        #payment-screen { display: none; text-align: center; }
+        .timer { font-size: 40px; font-weight: 900; color: #ff3b30; margin: 20px 0; }
+        .copy-card { background: #222; padding: 15px; border-radius: 12px; font-family: monospace; font-size: 18px; margin: 15px 0; border: 1px dashed #444; }
 
-        /* Кнопка */
-        .main-btn { width: 100%; background: var(--accent); color: #000; padding: 18px; border: none; border-radius: 15px; font-weight: 800; font-size: 16px; cursor: pointer; box-shadow: 0 4px 15px rgba(255,255,255,0.1); }
-        
-        .profile-stat { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; }
+        /* Навигация */
+        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); display: flex; padding: 15px 0 35px; border-top: 1px solid #222; }
+        .nav-btn { flex: 1; text-align: center; color: var(--gray); font-size: 10px; font-weight: 700; text-transform: uppercase; cursor: pointer; }
+        .nav-btn.active { color: #fff; }
+        .nav-btn span { display: block; font-size: 24px; margin-bottom: 4px; }
+
+        .btn-main { width: 100%; background: #fff; color: #000; border: none; padding: 18px; border-radius: 15px; font-weight: 800; font-size: 16px; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    
-    <div id="order" class="tab-content active">
-        <h1>Заказ 💸</h1>
+<div class="app">
+    <div id="tab-buy" class="tab-content active">
+        <h1>Выкуп 🛒</h1>
         <div class="card">
-            <label>Ссылка на вещь</label>
-            <input type="text" id="link" placeholder="https://...">
-            
-            <label>Цена (в валюте площадки)</label>
-            <input type="number" id="price" placeholder="Например: 1200">
-            
-            <label>Примерный вес</label>
-            <div class="weight-chips" id="weightBox">
-                <div class="chip" onclick="selectWeight(0.4, this)">👕 Футболка</div>
-                <div class="chip" onclick="selectWeight(1.2, this)">🧥 Худи</div>
-                <div class="chip" onclick="selectWeight(1.6, this)">👟 Обувь</div>
-                <div class="chip" onclick="selectWeight(2.5, this)">🏂 Пуховик</div>
+            <div class="input-group">
+                <label>Ссылка на вещь</label>
+                <input type="text" id="link" placeholder="Poizon / 95 / Dewu">
             </div>
-            
-            <button class="main-btn" onclick="checkout()">Оформить в ЛС</button>
+            <div class="input-group">
+                <label>Цена в валюте</label>
+                <input type="number" id="price" placeholder="Например: 1500">
+            </div>
+            <label>Примерный вес</label>
+            <div class="weight-grid">
+                <div class="w-item" onclick="setW(0.3, this)"><span>👕</span><p>Футболка (0.3кг)</p></div>
+                <div class="w-item active" onclick="setW(1.2, this)"><span>👟</span><p>Кроссовки (1.2кг)</p></div>
+                <div class="w-item" onclick="setW(0.8, this)"><span>🧥</span><p>Худи (0.8кг)</p></div>
+                <div class="w-item" onclick="setW(2.2, this)"><span>🧥</span><p>Пуховик (2.2кг)</p></div>
+            </div>
+            <button class="btn-main" onclick="startPay()">Оформить заказ</button>
         </div>
     </div>
 
-    <div id="profile" class="tab-content">
+    <div id="payment-screen" class="tab-content">
+        <h1>Оплата 💳</h1>
+        <div class="card">
+            <p style="font-size: 14px; color: var(--gray);">Переведите сумму на карту. <br><b>Укажите ваш ник в комментарии!</b></p>
+            <div class="timer" id="timer">15:00</div>
+            <div class="copy-card">4276 0000 0000 0000</div>
+            <p style="font-size: 12px;">Сумма будет рассчитана ботом в чате.</p>
+            <button class="btn-main" onclick="finalStep()">Я оплатил</button>
+        </div>
+    </div>
+
+    <div id="tab-prof" class="tab-content">
         <h1>Профиль 👤</h1>
         <div class="card">
-            <label>Ваши параметры</label>
-            <input type="text" id="u_height" placeholder="Рост (см)">
-            <input type="text" id="u_weight" placeholder="Вес (кг)">
-            <input type="text" id="u_size" placeholder="Размер обуви">
-            <p style="font-size: 11px; color: #555;">Данные сохранятся для будущих заказов</p>
+            <div class="input-group"><label>Рост (необяз.)</label><input type="text" id="ph" placeholder="см"></div>
+            <div class="input-group"><label>Вес (необяз.)</label><input type="text" id="pw" placeholder="кг"></div>
+            <div class="input-group"><label>Размер</label><input type="text" id="ps" placeholder="EU / CM"></div>
         </div>
     </div>
-
-    <div id="search" class="tab-content">
-        <h1>Поиск 🔍</h1>
-        <div class="card" style="text-align: center; padding: 40px 20px;">
-            <div style="font-size: 50px; margin-bottom: 20px;">📸</div>
-            <p>Чтобы найти вещь по фото, просто отправь изображение боту в чат.</p>
-        </div>
-    </div>
-
 </div>
 
-<div class="nav-bar">
-    <div class="nav-item active" onclick="showTab('order', this)">
-        <span class="nav-icon">📦</span>
-        <span class="nav-text">Заказ</span>
-    </div>
-    <div class="nav-item" onclick="showTab('search', this)">
-        <span class="nav-icon">🔍</span>
-        <span class="nav-text">Поиск</span>
-    </div>
-    <div class="nav-item" onclick="showTab('profile', this)">
-        <span class="nav-icon">👤</span>
-        <span class="nav-text">Профиль</span>
-    </div>
+<div class="nav">
+    <div class="nav-btn active" onclick="switchTab('tab-buy', this)"><span>🛒</span>Выкуп</div>
+    <div class="nav-btn" onclick="switchTab('tab-prof', this)"><span>👤</span>Профиль</div>
 </div>
 
 <script>
     let tg = window.Telegram.WebApp;
     tg.expand();
-    let selectedWeight = 1.0;
+    let selWeight = 1.2;
 
-    function showTab(tabId, el) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
+    function switchTab(id, el) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
         el.classList.add('active');
         tg.HapticFeedback.impactOccurred('light');
     }
 
-    function selectWeight(val, el) {
-        selectedWeight = val;
-        document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected');
+    function setW(val, el) {
+        selWeight = val;
+        document.querySelectorAll('.w-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
     }
 
-    function checkout() {
-        const link = document.getElementById('link').value;
-        const price = document.getElementById('price').value;
-        const h = document.getElementById('u_height').value;
-        const w = document.getElementById('u_weight').value;
-        const s = document.getElementById('u_size').value;
+    function startPay() {
+        if(!document.getElementById('link').value || !document.getElementById('price').value) return alert('Заполни все поля!');
+        switchTab('payment-screen', {});
+        let timeLeft = 900;
+        setInterval(() => {
+            if(timeLeft <= 0) return;
+            timeLeft--;
+            let m = Math.floor(timeLeft/60);
+            let s = timeLeft % 60;
+            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+        }, 1000);
+    }
 
-        if(!link || !price) {
-            alert("Укажите ссылку и цену!");
-            return;
-        }
-
-        const orderData = {
-            link: link,
-            price: price,
-            weight: selectedWeight,
-            height: h || "не указан",
-            weight_user: w || "не указан",
-            size: s || "не указан"
+    function finalStep() {
+        const data = {
+            link: document.getElementById('link').value,
+            price: document.getElementById('price').value,
+            weight: selWeight,
+            h: document.getElementById('ph').value || "-",
+            w: document.getElementById('pw').value || "-",
+            s: document.getElementById('ps').value || "-"
         };
-
-        // Отправляем данные боту (он их обработает и пришлет реквизиты)
-        tg.sendData(JSON.stringify(orderData));
-        
-        // Перекидываем в ЛС к менеджеру с готовым текстом (опционально)
-        const managerUser = "shom67"; 
-        const text = `Привет! Хочу заказать:\n🔗 Ссылка: ${link}\n💰 Цена: ${price}\n⚖️ Вес: ${selectedWeight}кг\n📏 Рост/Вес: ${h}/${w}\n👟 Размер: ${s}`;
-        
-        // ВАЖНО: Мы сначала отправляем данные боту через sendData, 
-        // а потом юзер может сам написать менеджеру.
+        tg.sendData(JSON.stringify(data));
         tg.close();
     }
 </script>
