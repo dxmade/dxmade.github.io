@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DXSHOP App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; margin: 0; padding: 20px; }
+        .container { max-width: 400px; margin: 0 auto; }
+        h1 { font-size: 24px; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .section { margin-bottom: 30px; }
+        label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; text-transform: uppercase; }
+        input, select { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 12px; margin-bottom: 15px; border-radius: 5px; box-sizing: border-box; }
+        .btn { width: 100%; background: #fff; color: #000; padding: 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .status-card { background: #111; padding: 15px; border-radius: 5px; border-left: 4px solid #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DXSHOP APP</h1>
+        
+        <div class="section">
+            <label>Твои параметры (для выкупа)</label>
+            <input type="text" id="height" placeholder="Рост (см)">
+            <input type="text" id="weight" placeholder="Вес (кг)">
+            <input type="text" id="size" placeholder="Размер обуви (EU)">
+        </div>
+
+        <div class="section">
+            <label>Оформление заказа</label>
+            <select id="region">
+                <option value="china">Китай (Poizon)</option>
+                <option value="korea">Корея (Fruits)</option>
+            </select>
+            <input type="number" id="price" placeholder="Цена в валюте площадки">
+            <button class="btn" onclick="sendOrder()">Оформить и купить</button>
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function sendOrder() {
+            let data = {
+                height: document.getElementById('height').value,
+                weight: document.getElementById('weight').value,
+                size: document.getElementById('size').value,
+                region: document.getElementById('region').value,
+                price: document.getElementById('price').value
+            };
+
+            if(!data.price || !data.height) {
+                alert("Заполни все данные!");
+                return;
+            }
+
+            // Отправка данных обратно в бота
+            tg.sendData(JSON.stringify(data));
+            tg.close();
+        }
+    </script>
+</body>
+</html>
