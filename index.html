@@ -16,8 +16,10 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         h1 { font-weight: 900; font-size: 32px; margin-bottom: 20px; letter-spacing: -1.5px; }
+        .greeting-text { font-size: 24px; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
+        .sub-greeting { font-size: 14px; color: var(--gray); margin-bottom: 25px; }
         
-        /* Карточки в стиле Apple/Telegram */
+        /* Карточки */
         .card { background: var(--card); border: 1px solid #222; border-radius: var(--br); padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .input-group { margin-bottom: 15px; }
         label { display: block; font-size: 10px; color: var(--gray); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; }
@@ -82,11 +84,17 @@
     </div>
 
     <div id="tab-prof" class="tab-content">
-        <h1>Профиль 👤</h1>
+        <div class="greeting-text" id="user-name">Привет, шомхай!</div>
+        <div class="sub-greeting">Твои параметры для выкупа сохранены здесь.</div>
+        
         <div class="card">
             <div class="input-group"><label>Рост (необяз.)</label><input type="text" id="ph" placeholder="см"></div>
             <div class="input-group"><label>Вес (необяз.)</label><input type="text" id="pw" placeholder="кг"></div>
             <div class="input-group"><label>Размер</label><input type="text" id="ps" placeholder="EU / CM"></div>
+        </div>
+        
+        <div class="card" style="text-align: center; border: 1px dashed #333;">
+            <p style="font-size: 12px; color: var(--gray); margin: 0;">Версия DXSHOP 8.6 Premium</p>
         </div>
     </div>
 </div>
@@ -99,6 +107,11 @@
 <script>
     let tg = window.Telegram.WebApp;
     tg.expand();
+    
+    // Вставляем имя пользователя из Telegram
+    const firstName = tg.initDataUnsafe?.user?.first_name || "шомхай";
+    document.getElementById('user-name').innerText = `Привет, ${firstName}!`;
+
     let selWeight = 1.2;
 
     function switchTab(id, el) {
@@ -119,8 +132,11 @@
         if(!document.getElementById('link').value || !document.getElementById('price').value) return alert('Заполни все поля!');
         switchTab('payment-screen', {});
         let timeLeft = 900;
-        setInterval(() => {
-            if(timeLeft <= 0) return;
+        let timerInterval = setInterval(() => {
+            if(timeLeft <= 0) {
+                clearInterval(timerInterval);
+                return;
+            }
             timeLeft--;
             let m = Math.floor(timeLeft/60);
             let s = timeLeft % 60;
