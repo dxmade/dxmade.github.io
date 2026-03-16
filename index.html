@@ -8,31 +8,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #000; --card: #1c1c1e; --accent: #fff; --gray: #8e8e93; --br: 16px; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 0; -webkit-user-select: none; }
         .app { padding: 15px 15px 100px; }
-        .tab-content { display: none; animation: fadeIn 0.2s ease; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 { font-weight: 900; font-size: 28px; margin-bottom: 20px; }
-        .promo-card { background: var(--card); padding: 15px; border-radius: var(--br); border: 1px solid #2c2c2e; margin-bottom: 15px; }
+        h1 { font-weight: 900; font-size: 28px; margin-bottom: 20px; letter-spacing: -1px; }
+        .promo-card { background: var(--card); padding: 18px; border-radius: var(--br); border: 1px solid #2c2c2e; margin-bottom: 15px; }
         
-        /* Поля ввода */
-        label { display: block; font-size: 11px; color: var(--gray); font-weight: 600; margin-bottom: 6px; text-transform: uppercase; }
-        input { width: 100%; background: #2c2c2e; border: 1px solid #3a3a3c; color: #fff; padding: 14px; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; }
+        label { display: block; font-size: 11px; color: var(--gray); font-weight: 700; margin-bottom: 8px; text-transform: uppercase; }
+        input { width: 100%; background: #2c2c2e; border: 1px solid #3a3a3c; color: #fff; padding: 16px; border-radius: 14px; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; }
 
-        /* История заказов */
-        .order-item { border-left: 3px solid #34c759; background: #252528; padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 13px; }
+        .order-item { background: #252528; padding: 15px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid #fff; }
         
-        /* Кнопки */
-        .btn-main { width: 100%; background: #fff; color: #000; border: none; padding: 18px; border-radius: 14px; font-weight: 800; font-size: 16px; cursor: pointer; }
-        .btn-sec { background: #2c2c2e; color: #fff; padding: 10px; border-radius: 10px; border: none; font-size: 12px; width: 100%; margin-top: 5px; }
+        .btn-main { width: 100%; background: #fff; color: #000; border: none; padding: 20px; border-radius: 16px; font-weight: 800; font-size: 16px; cursor: pointer; }
+        .btn-sec { background: #2c2c2e; color: #fff; padding: 12px; border-radius: 12px; border: none; width: 100%; margin-top: 10px; }
 
-        /* Навигация */
-        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); display: flex; padding: 10px 0 30px; border-top: 1px solid #222; }
-        .nav-btn { flex: 1; text-align: center; color: var(--gray); font-size: 10px; }
+        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); display: flex; padding: 12px 0 35px; border-top: 1px solid #222; z-index: 100; }
+        .nav-btn { flex: 1; text-align: center; color: var(--gray); font-size: 11px; font-weight: 600; }
         .nav-btn.active { color: #fff; }
-        .nav-btn div { font-size: 22px; margin-bottom: 4px; }
+        .nav-btn div { font-size: 24px; margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -40,133 +36,142 @@
 <div class="app">
     <div id="tab-home" class="tab-content active">
         <h1 id="user-name">DXSHOP</h1>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
-            <div class="promo-card" onclick="switchTab('tab-help')"><h3>Помощь ❓</h3><p style="font-size: 10px; color: var(--gray);">Как заказать?</p></div>
-            <div class="promo-card" onclick="switchTab('tab-ref')"><h3>Бонусы 🎁</h3><p style="font-size: 10px; color: var(--gray);">Рефералка</p></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+            <div class="promo-card" onclick="switchTab('tab-help')"><h3>Помощь ❓</h3><p style="font-size: 11px; color: var(--gray);">FAQ и гайды</p></div>
+            <div class="promo-card" onclick="switchTab('tab-ref')"><h3>Бонусы 🎁</h3><p style="font-size: 11px; color: var(--gray);">Рефералка</p></div>
         </div>
-        <button class="btn-main" onclick="switchTab('tab-buy')">🚀 Оформить заказ</button>
+        <button class="btn-main" onclick="switchTab('tab-buy')">🛒 Оформить выкуп</button>
     </div>
 
     <div id="tab-buy" class="tab-content">
-        <h1>Выкуп 🛒</h1>
+        <h1>Новый заказ 🛒</h1>
         <div class="promo-card">
-            <label>Ссылка на товар</label><input type="text" id="link" placeholder="Poizon / Dewu">
-            <label>Цена в Юанях (¥)</label><input type="number" id="price" oninput="calcTotal()" placeholder="0">
-            <div id="calc-res" style="text-align: center; margin-bottom: 15px; font-weight: 700; color: #34c759;">Итого: 2500₽</div>
-            <button class="btn-main" onclick="switchTab('tab-pay')">Далее</button>
+            <label>Ссылка на айтем</label><input type="text" id="link" placeholder="Poizon / Dewu / 95">
+            <label>Цена в Юанях (¥)</label><input type="number" id="price" oninput="updatePrice()" placeholder="Например: 1250">
+            <div id="calc-preview" style="text-align: center; margin: 10px 0; font-weight: 800; color: #34c759; font-size: 18px;">Итого: 2500 ₽</div>
+            <button class="btn-main" onclick="switchTab('tab-pay')">К оплате</button>
         </div>
     </div>
 
     <div id="tab-pay" class="tab-content">
         <h1>Оплата 💳</h1>
         <div class="promo-card" style="text-align: center;">
-            <p>Переведите на карту:</p>
-            <h2 id="final-sum">0 ₽</h2>
-            <div style="background: #333; padding: 15px; border-radius: 10px; font-family: monospace; margin: 10px 0;">4276 0000 0000 0000</div>
-            <p style="font-size: 11px; color: var(--gray);">Укажите ваш ник в комментарии. <br>Таймер: 15:00</p>
-            <button class="btn-main" onclick="completeOrder()">Я оплатил</button>
+            <p style="font-size: 14px; margin-bottom: 10px;">Сумма к переводу:</p>
+            <h2 id="final-price" style="font-size: 42px; margin: 10px 0; letter-spacing: -2px;">2500 ₽</h2>
+            <div style="background: #333; padding: 20px; border-radius: 14px; font-family: monospace; font-size: 18px; margin: 20px 0; border: 1px dashed #555;">4276 0000 0000 0000</div>
+            <p style="font-size: 12px; color: var(--gray);">Переведите точную сумму на карту.<br>Ник в комментарии ускорит проверку.</p>
+            <button class="btn-main" onclick="finishOrder()">Я оплатил</button>
         </div>
     </div>
 
     <div id="tab-prof" class="tab-content">
         <h1>Профиль 👤</h1>
         <div class="promo-card">
-            <label>Твои замеры</label>
-            <input type="text" id="ph" placeholder="Рост" style="width: 30%; display: inline;">
-            <input type="text" id="pw" placeholder="Вес" style="width: 30%; display: inline;">
-            <input type="text" id="ps" placeholder="Размер" style="width: 30%; display: inline;">
+            <label>Замеры для подбора</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="ph" placeholder="Рост">
+                <input type="text" id="pw" placeholder="Вес">
+                <input type="text" id="ps" placeholder="Size">
+            </div>
         </div>
-        <h3>Мои заказы 📦</h3>
-        <div id="orders-list">
-            <p style="color: var(--gray); font-size: 12px;">Заказов пока нет</p>
+        <h3 style="margin-left: 5px;">Мои заказы 📦</h3>
+        <div id="orders-container">
+            <p style="color: var(--gray); font-size: 13px; padding: 10px;">Тут появится история твоих покупок.</p>
         </div>
     </div>
 
     <div id="tab-help" class="tab-content">
         <h1>Помощь ❓</h1>
         <div class="promo-card">
-            <h4>1. Где найти ссылку?</h4><p style="font-size: 12px;">Скопируйте ссылку в приложении Poizon (Dewu).</p>
-            <h4>2. Как считать?</h4><p style="font-size: 12px;">Курс 12.0 + 2500 доставка. Бот считает всё сам!</p>
-            <h4>3. Сроки доставки</h4><p style="font-size: 12px;">Обычно 14-20 дней до РФ.</p>
-            <button class="btn-sec" onclick="switchTab('tab-home')">Назад</button>
+            <h4 style="margin: 0 0 10px;">Как сделать заказ?</h4>
+            <p style="font-size: 13px; line-height: 1.5; color: #ccc;">
+                1. Найдите товар в приложении Poizon.<br>
+                2. Скопируйте ссылку (кнопка поделиться).<br>
+                3. Вставьте ссылку во вкладке "Выкуп".<br>
+                4. Оплатите заказ и пришлите чек в бот.
+            </p>
+            <button class="btn-sec" onclick="switchTab('tab-home')">Понятно</button>
         </div>
     </div>
 
     <div id="tab-ref" class="tab-content">
         <h1>Рефералка 🎁</h1>
         <div class="promo-card">
-            <p style="font-size: 13px;">Пригласи друга и получи 500₽ скидки на следующий выкуп!</p>
-            <input type="text" id="ref-link" readonly>
+            <p style="font-size: 14px;">Приглашай друзей и получай <b>скидку 500₽</b> на каждый их первый заказ!</p>
+            <input type="text" id="ref-url" readonly style="text-align: center; color: #34c759; font-weight: 700;">
             <button class="btn-main" onclick="copyRef()">Копировать ссылку</button>
         </div>
     </div>
 </div>
 
 <div class="nav">
-    <div class="nav-btn active" onclick="switchTab('tab-home')"><div>🏠</div>Главная</div>
-    <div class="nav-btn" onclick="switchTab('tab-buy')"><div>🛒</div>Выкуп</div>
-    <div class="nav-btn" onclick="switchTab('tab-prof')"><div>👤</div>Профиль</div>
+    <div class="nav-btn active" id="nav-home" onclick="switchTab('tab-home')"><div>🏠</div>Главная</div>
+    <div class="nav-btn" id="nav-buy" onclick="switchTab('tab-buy')"><div>🛒</div>Выкуп</div>
+    <div class="nav-btn" id="nav-prof" onclick="switchTab('tab-prof')"><div>👤</div>Профиль</div>
 </div>
 
 <script>
     let tg = window.Telegram.WebApp;
     tg.expand();
-    
-    // Имя и Рефералка
-    const user = tg.initDataUnsafe?.user;
-    document.getElementById('user-name').innerText = `Привет, ${user?.first_name || 'бро'}!`;
-    document.getElementById('ref-link').value = `https://t.me/твой_бот?start=${user?.id || '123'}`;
 
-    // Загрузка заказов из памяти
+    const userId = tg.initDataUnsafe?.user?.id || "000";
+    document.getElementById('user-name').innerText = `Привет, ${tg.initDataUnsafe?.user?.first_name || 'шомхай'}!`;
+    document.getElementById('ref-url').value = `https://t.me/твой_ник_бота?start=${userId}`;
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        if(tabId === 'tab-home') document.getElementById('nav-home').classList.add('active');
+        if(tabId === 'tab-buy') document.getElementById('nav-buy').classList.add('active');
+        if(tabId === 'tab-prof') document.getElementById('nav-prof').classList.add('active');
+        
+        tg.HapticFeedback.impactOccurred('light');
+    }
+
+    function updatePrice() {
+        let p = document.getElementById('price').value;
+        let total = p ? Math.floor(p * 12 + 2500) : 2500;
+        document.getElementById('calc-preview').innerText = `Итого: ${total} ₽`;
+        document.getElementById('final-price').innerText = `${total} ₽`;
+    }
+
+    function copyRef() {
+        let input = document.getElementById('ref-url');
+        input.select();
+        document.execCommand('copy');
+        tg.showAlert("Ссылка скопирована! Отправь её другу.");
+    }
+
     function loadOrders() {
-        const orders = JSON.parse(localStorage.getItem('myOrders') || '[]');
-        const container = document.getElementById('orders-list');
+        const orders = JSON.parse(localStorage.getItem('dx_orders') || '[]');
+        const container = document.getElementById('orders-container');
         if(orders.length > 0) {
             container.innerHTML = orders.map(o => `
                 <div class="order-item">
-                    <b>${o.date}</b><br>
-                    Сумма: ${o.price}₽ | Статус: В обработке
+                    <div style="display: flex; justify-content: space-between;">
+                        <b>${o.date}</b>
+                        <span style="color: #34c759;">В пути</span>
+                    </div>
+                    <div style="font-size: 12px; color: #888; margin-top: 5px;">Сумма: ${o.price}₽</div>
                 </div>
             `).join('');
         }
     }
     loadOrders();
 
-    function switchTab(id) {
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        tg.HapticFeedback.impactOccurred('light');
-    }
-
-    function calcTotal() {
-        let p = document.getElementById('price').value;
-        let total = p ? int(p * 12 + 2500) : 2500;
-        document.getElementById('calc-res').innerText = `Итого: ${total}₽`;
-        document.getElementById('final-sum').innerText = `${total} ₽`;
-    }
-
-    function copyRef() {
-        let copyText = document.getElementById("ref-link");
-        copyText.select();
-        document.execCommand("copy");
-        tg.showAlert("Ссылка скопирована!");
-    }
-
-    function completeOrder() {
-        const price_val = document.getElementById('price').value;
-        const total = Math.floor(price_val * 12 + 2500);
-        
+    function finishOrder() {
+        const finalPrice = document.getElementById('final-price').innerText.replace(' ₽', '');
         const order = {
             date: new Date().toLocaleDateString(),
-            price: total,
+            price: finalPrice,
             link: document.getElementById('link').value
         };
 
-        // Сохраняем в локальную память
-        let orders = JSON.parse(localStorage.getItem('myOrders') || '[]');
+        let orders = JSON.parse(localStorage.getItem('dx_orders') || '[]');
         orders.unshift(order);
-        localStorage.setItem('myOrders', JSON.stringify(orders));
+        localStorage.setItem('dx_orders', JSON.stringify(orders));
 
         tg.sendData(JSON.stringify({
             ...order,
