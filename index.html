@@ -3,183 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DXSHOP | MULTIVERSE</title>
+    <title>DXMADE_ | PREMIUM</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #000; --card: #1c1c1e; --accent: #fff; --gray: #8e8e93; --br: 16px; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 0; -webkit-user-select: none; }
-        .app { padding: 15px 15px 100px; }
+        :root { --bg: #000; --card: #141414; --accent: #fff; --gray: #8e8e93; --br: 20px; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 0; -webkit-user-select: none; overflow-x: hidden; }
+        
+        .app { padding: 15px 15px 110px; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-content.active { display: block; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 { font-weight: 900; font-size: 28px; margin-bottom: 20px; letter-spacing: -1px; }
-        .promo-card { background: var(--card); padding: 18px; border-radius: var(--br); border: 1px solid #2c2c2e; margin-bottom: 15px; }
+        /* Заголовок */
+        header { margin-bottom: 25px; padding-top: 10px; }
+        .logo { font-weight: 900; font-size: 24px; letter-spacing: -1px; margin: 0; }
+        .greeting { color: var(--gray); font-size: 14px; margin-top: 4px; }
+
+        /* Верхние кнопки */
+        .top-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .btn-small { background: var(--card); border: 1px solid #222; border-radius: 12px; padding: 10px 5px; text-align: center; font-size: 10px; font-weight: 600; transition: transform 0.1s; }
+
+        /* Сетка функционала */
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+        .grid-item { background: var(--card); border-radius: var(--br); padding: 20px; border: 1px solid #222; transition: transform 0.1s; }
+        .grid-item:active, .btn-small:active, .nav-btn:active { transform: scale(0.95); }
+        .grid-item .icon { font-size: 28px; margin-bottom: 10px; display: block; }
+        .grid-item h3 { margin: 0; font-size: 14px; }
+        .grid-item p { margin: 5px 0 0; font-size: 11px; color: var(--gray); }
+
+        /* Поля ввода */
+        label { display: block; font-size: 11px; color: var(--gray); font-weight: 700; margin-bottom: 8px; text-transform: uppercase; padding-left: 5px; }
+        input { width: 100%; background: #1c1c1e; border: 1px solid #2c2c2e; color: #fff; padding: 16px; border-radius: 16px; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; }
         
-        label { display: block; font-size: 11px; color: var(--gray); font-weight: 700; margin-bottom: 8px; text-transform: uppercase; }
-        input { width: 100%; background: #2c2c2e; border: 1px solid #3a3a3c; color: #fff; padding: 16px; border-radius: 14px; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; }
+        /* Выбор веса */
+        .weight-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        .w-btn { flex: 1; background: var(--card); border: 1px solid #222; padding: 12px; border-radius: 12px; font-size: 12px; color: var(--gray); text-align: center; }
+        .w-btn.active { border-color: #fff; color: #fff; background: #222; }
 
-        .order-item { background: #252528; padding: 15px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid #fff; }
+        /* Колесо игры */
+        .wheel-box { position: relative; width: 200px; height: 200px; margin: 20px auto; border-radius: 50%; border: 5px solid #222; overflow: hidden; transition: transform 3s cubic-bezier(0.15, 0, 0.15, 1); }
+        .wheel-part { position: absolute; width: 100%; height: 100%; clip-path: polygon(50% 50%, 100% 0, 100% 100%); background: #1a1a1a; border: 1px solid #333; }
+
+        /* Кнопки и Навигация */
+        .btn-main { width: 100%; background: #fff; color: #000; border: none; padding: 18px; border-radius: 18px; font-weight: 800; font-size: 16px; cursor: pointer; }
         
-        .btn-main { width: 100%; background: #fff; color: #000; border: none; padding: 20px; border-radius: 16px; font-weight: 800; font-size: 16px; cursor: pointer; }
-        .btn-sec { background: #2c2c2e; color: #fff; padding: 12px; border-radius: 12px; border: none; width: 100%; margin-top: 10px; }
+        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); display: flex; padding: 10px 0 35px; border-top: 1px solid #1a1a1a; z-index: 1000; }
+        .nav-btn { flex: 1; text-align: center; color: var(--gray); font-size: 10px; font-weight: 600; opacity: 0.6; }
+        .nav-btn.active { color: #fff; opacity: 1; }
+        .nav-btn div { font-size: 24px; margin-bottom: 4px; }
 
-        .nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); display: flex; padding: 12px 0 35px; border-top: 1px solid #222; z-index: 100; }
-        .nav-btn { flex: 1; text-align: center; color: var(--gray); font-size: 11px; font-weight: 600; }
-        .nav-btn.active { color: #fff; }
-        .nav-btn div { font-size: 24px; margin-bottom: 5px; }
+        .order-card { background: #1c1c1e; padding: 15px; border-radius: 15px; margin-bottom: 10px; border-left: 4px solid #fff; }
     </style>
 </head>
 <body>
 
 <div class="app">
+    <header>
+        <p class="logo">DXMADE_</p>
+        <div class="greeting" id="user-greeting">Привет, шомхай! 🖐️</div>
+    </header>
+
     <div id="tab-home" class="tab-content active">
-        <h1 id="user-name">DXSHOP</h1>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
-            <div class="promo-card" onclick="switchTab('tab-help')"><h3>Помощь ❓</h3><p style="font-size: 11px; color: var(--gray);">FAQ и гайды</p></div>
-            <div class="promo-card" onclick="switchTab('tab-ref')"><h3>Бонусы 🎁</h3><p style="font-size: 11px; color: var(--gray);">Рефералка</p></div>
+        <div class="top-btns">
+            <div class="btn-small" onclick="switchTab('tab-help')">❓ FAQ</div>
+            <div class="btn-small" onclick="switchTab('tab-ref')">🎁 Рефка</div>
+            <div class="btn-small" onclick="window.open('https://t.me/твой_менеджер')">👨‍💻 Менеджер</div>
         </div>
-        <button class="btn-main" onclick="switchTab('tab-buy')">🛒 Оформить выкуп</button>
+
+        <div class="grid-menu">
+            <div class="grid-item" onclick="switchTab('tab-buy')"><span class="icon">🧮</span><h3>Калькулятор</h3><p>Быстрый расчет</p></div>
+            <div class="grid-item"><span class="icon">📈</span><h3>Курс CNY</h3><p id="cny-rate">12.4 ₽</p></div>
+            <div class="grid-item"><span class="icon">🖼️</span><h3>Фото-поиск</h3><p>Найти по фото</p></div>
+            <div class="grid-item" onclick="switchTab('tab-game')"><span class="icon">🎡</span><h3>Игра</h3><p>Выбей промо</p></div>
+        </div>
+        <button class="btn-main" onclick="switchTab('tab-buy')">💨 Быстрый заказ</button>
     </div>
 
     <div id="tab-buy" class="tab-content">
-        <h1>Новый заказ 🛒</h1>
-        <div class="promo-card">
-            <label>Ссылка на айтем</label><input type="text" id="link" placeholder="Poizon / Dewu / 95">
-            <label>Цена в Юанях (¥)</label><input type="number" id="price" oninput="updatePrice()" placeholder="Например: 1250">
-            <div id="calc-preview" style="text-align: center; margin: 10px 0; font-weight: 800; color: #34c759; font-size: 18px;">Итого: 2500 ₽</div>
-            <button class="btn-main" onclick="switchTab('tab-pay')">К оплате</button>
+        <h1>Оформление 🛒</h1>
+        <label>Ссылка на айтем</label><input type="text" id="link" placeholder="Poizon / Dewu">
+        <label>Цена в Юанях (¥)</label><input type="number" id="price" oninput="recalc()" placeholder="0">
+        <label>Категория (Вес)</label>
+        <div class="weight-selector">
+            <div class="w-btn active" onclick="setWeight(2500, this)">👟 Обувь</div>
+            <div class="w-btn" onclick="setWeight(1800, this)">👕 Одежда</div>
         </div>
-    </div>
-
-    <div id="tab-pay" class="tab-content">
-        <h1>Оплата 💳</h1>
-        <div class="promo-card" style="text-align: center;">
-            <p style="font-size: 14px; margin-bottom: 10px;">Сумма к переводу:</p>
-            <h2 id="final-price" style="font-size: 42px; margin: 10px 0; letter-spacing: -2px;">2500 ₽</h2>
-            <div style="background: #333; padding: 20px; border-radius: 14px; font-family: monospace; font-size: 18px; margin: 20px 0; border: 1px dashed #555;">4276 0000 0000 0000</div>
-            <p style="font-size: 12px; color: var(--gray);">Переведите точную сумму на карту.<br>Ник в комментарии ускорит проверку.</p>
-            <button class="btn-main" onclick="finishOrder()">Я оплатил</button>
+        <div class="promo-card" style="text-align: center; margin-bottom: 20px;">
+            <p style="color: var(--gray); font-size: 13px;">Итого к оплате:</p>
+            <h2 id="total-price" style="font-size: 36px; margin: 5px 0;">2500 ₽</h2>
         </div>
+        <button class="btn-main" onclick="goToPay()">Оформить выкуп</button>
     </div>
 
     <div id="tab-prof" class="tab-content">
         <h1>Профиль 👤</h1>
-        <div class="promo-card">
-            <label>Замеры для подбора</label>
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="ph" placeholder="Рост">
-                <input type="text" id="pw" placeholder="Вес">
-                <input type="text" id="ps" placeholder="Size">
-            </div>
+        <div class="grid-item" style="margin-bottom: 20px;">
+            <p>Твой баланс: <b>0 ₽</b></p>
+            <p>Заказов: <b id="order-count">0</b></p>
         </div>
-        <h3 style="margin-left: 5px;">Мои заказы 📦</h3>
-        <div id="orders-container">
-            <p style="color: var(--gray); font-size: 13px; padding: 10px;">Тут появится история твоих покупок.</p>
+        <div class="top-btns" style="grid-template-columns: 1fr 1fr;">
+            <div class="btn-small" onclick="switchTab('tab-ref')">🤝 Реф. система</div>
+            <div class="btn-small">📏 Мои замеры</div>
         </div>
+        <h3 style="margin-top: 25px;">Последние заказы</h3>
+        <div id="orders-list"></div>
     </div>
 
-    <div id="tab-help" class="tab-content">
-        <h1>Помощь ❓</h1>
-        <div class="promo-card">
-            <h4 style="margin: 0 0 10px;">Как сделать заказ?</h4>
-            <p style="font-size: 13px; line-height: 1.5; color: #ccc;">
-                1. Найдите товар в приложении Poizon.<br>
-                2. Скопируйте ссылку (кнопка поделиться).<br>
-                3. Вставьте ссылку во вкладке "Выкуп".<br>
-                4. Оплатите заказ и пришлите чек в бот.
-            </p>
-            <button class="btn-sec" onclick="switchTab('tab-home')">Понятно</button>
+    <div id="tab-game" class="tab-content">
+        <h1 style="text-align: center;">Удача DX 🎡</h1>
+        <div id="wheel" class="wheel-box">
+            <div class="wheel-part" style="transform: rotate(0deg);"></div>
+            <div class="wheel-part" style="transform: rotate(60deg);"></div>
+            <div class="wheel-part" style="transform: rotate(120deg);"></div>
+            <div class="wheel-part" style="transform: rotate(180deg);"></div>
+            <div class="wheel-part" style="transform: rotate(240deg);"></div>
+            <div class="wheel-part" style="transform: rotate(300deg);"></div>
         </div>
+        <p id="game-res" style="text-align: center; color: var(--gray);">Испытай удачу!</p>
+        <button class="btn-main" onclick="spinWheel()">Крутить колесо</button>
     </div>
 
     <div id="tab-ref" class="tab-content">
         <h1>Рефералка 🎁</h1>
-        <div class="promo-card">
-            <p style="font-size: 14px;">Приглашай друзей и получай <b>скидку 500₽</b> на каждый их первый заказ!</p>
-            <input type="text" id="ref-url" readonly style="text-align: center; color: #34c759; font-weight: 700;">
-            <button class="btn-main" onclick="copyRef()">Копировать ссылку</button>
+        <div class="grid-item">
+            <p>Получай 500₽ за каждого друга!</p>
+            <input type="text" id="ref-link" readonly style="margin-top: 15px; text-align: center; color: #34c759;">
+            <button class="btn-main" onclick="copyRef()">Копировать</button>
         </div>
     </div>
 </div>
 
-<div class="nav">
-    <div class="nav-btn active" id="nav-home" onclick="switchTab('tab-home')"><div>🏠</div>Главная</div>
-    <div class="nav-btn" id="nav-buy" onclick="switchTab('tab-buy')"><div>🛒</div>Выкуп</div>
-    <div class="nav-btn" id="nav-prof" onclick="switchTab('tab-prof')"><div>👤</div>Профиль</div>
-</div>
+<nav class="nav">
+    <div class="nav-btn active" id="n-home" onclick="switchTab('tab-home')"><div>🏠</div>Главная</div>
+    <div class="nav-btn" id="n-buy" onclick="switchTab('tab-buy')"><div>📦</div>Заказ</div>
+    <div class="nav-btn" id="n-prof" onclick="switchTab('tab-prof')"><div>👤</div>Профиль</div>
+</nav>
 
 <script>
     let tg = window.Telegram.WebApp;
     tg.expand();
 
-    const userId = tg.initDataUnsafe?.user?.id || "000";
-    document.getElementById('user-name').innerText = `Привет, ${tg.initDataUnsafe?.user?.first_name || 'шомхай'}!`;
-    document.getElementById('ref-url').value = `https://t.me/твой_ник_бота?start=${userId}`;
+    const user = tg.initDataUnsafe?.user;
+    document.getElementById('user-greeting').innerText = `Привет, ${user?.first_name || 'шомхай'}! 🖐️`;
+    document.getElementById('ref-link').value = `https://t.me/твой_бот?start=${user?.id || '000'}`;
 
-    function switchTab(tabId) {
+    let deliveryPrice = 2500;
+
+    function switchTab(id) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        if(tabId === 'tab-home') document.getElementById('nav-home').classList.add('active');
-        if(tabId === 'tab-buy') document.getElementById('nav-buy').classList.add('active');
-        if(tabId === 'tab-prof') document.getElementById('nav-prof').classList.add('active');
+        document.getElementById(id).classList.add('active');
         
-        tg.HapticFeedback.impactOccurred('light');
+        // Подсветка кнопок навигации
+        if(id === 'tab-home') document.getElementById('n-home').classList.add('active');
+        if(id === 'tab-buy') document.getElementById('n-buy').classList.add('active');
+        if(id === 'tab-prof') document.getElementById('n-prof').classList.add('active');
+        
+        tg.HapticFeedback.impactOccurred('medium');
     }
 
-    function updatePrice() {
-        let p = document.getElementById('price').value;
-        let total = p ? Math.floor(p * 12 + 2500) : 2500;
-        document.getElementById('calc-preview').innerText = `Итого: ${total} ₽`;
-        document.getElementById('final-price').innerText = `${total} ₽`;
+    function setWeight(price, el) {
+        deliveryPrice = price;
+        document.querySelectorAll('.w-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        recalc();
     }
+
+    function recalc() {
+        let p = document.getElementById('price').value;
+        let total = p ? Math.floor(p * 12.4 + deliveryPrice) : deliveryPrice;
+        document.getElementById('total-price').innerText = `${total} ₽`;
+    }
+
+    function spinWheel() {
+        let wheel = document.getElementById('wheel');
+        let rand = Math.floor(Math.random() * 3600) + 720;
+        wheel.style.transform = `rotate(${rand}deg)`;
+        tg.HapticFeedback.notificationOccurred('success');
+        setTimeout(() => {
+            document.getElementById('game-res').innerText = "Вы выиграли: Скидка 500₽!";
+        }, 3000);
+    }
+
+    function goToPay() {
+        const total = document.getElementById('total-price').innerText;
+        const link = document.getElementById('link').value;
+        if(!link || !document.getElementById('price').value) return tg.showAlert("Заполни все поля!");
+        
+        // Сохранение заказа
+        let orders = JSON.parse(localStorage.getItem('dx_history') || '[]');
+        orders.unshift({ date: new Date().toLocaleDateString(), price: total });
+        localStorage.setItem('dx_history', JSON.stringify(orders));
+
+        tg.sendData(JSON.stringify({ price: total, link: link }));
+        tg.close();
+    }
+
+    // Загрузка истории
+    const hist = JSON.parse(localStorage.getItem('dx_history') || '[]');
+    document.getElementById('order-count').innerText = hist.length;
+    document.getElementById('orders-list').innerHTML = hist.map(o => `
+        <div class="order-card"><b>${o.date}</b><br>Сумма: ${o.price}</div>
+    `).join('');
 
     function copyRef() {
-        let input = document.getElementById('ref-url');
-        input.select();
+        let i = document.getElementById('ref-link');
+        i.select();
         document.execCommand('copy');
-        tg.showAlert("Ссылка скопирована! Отправь её другу.");
-    }
-
-    function loadOrders() {
-        const orders = JSON.parse(localStorage.getItem('dx_orders') || '[]');
-        const container = document.getElementById('orders-container');
-        if(orders.length > 0) {
-            container.innerHTML = orders.map(o => `
-                <div class="order-item">
-                    <div style="display: flex; justify-content: space-between;">
-                        <b>${o.date}</b>
-                        <span style="color: #34c759;">В пути</span>
-                    </div>
-                    <div style="font-size: 12px; color: #888; margin-top: 5px;">Сумма: ${o.price}₽</div>
-                </div>
-            `).join('');
-        }
-    }
-    loadOrders();
-
-    function finishOrder() {
-        const finalPrice = document.getElementById('final-price').innerText.replace(' ₽', '');
-        const order = {
-            date: new Date().toLocaleDateString(),
-            price: finalPrice,
-            link: document.getElementById('link').value
-        };
-
-        let orders = JSON.parse(localStorage.getItem('dx_orders') || '[]');
-        orders.unshift(order);
-        localStorage.setItem('dx_orders', JSON.stringify(orders));
-
-        tg.sendData(JSON.stringify({
-            ...order,
-            h: document.getElementById('ph').value || "-",
-            w: document.getElementById('pw').value || "-",
-            s: document.getElementById('ps').value || "-"
-        }));
-        tg.close();
+        tg.showAlert("Ссылка скопирована!");
     }
 </script>
 </body>
